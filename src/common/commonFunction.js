@@ -1,6 +1,8 @@
 const pool = require("../../db");
 const commonQueries = require("./commonQueries");
-
+const fs = require('fs');
+const excelTojson = require('convert-excel-to-json');
+const teacherFunction = require("../teacher/teacherFunction");
 
 function getSubRoles(req,res) {
     const { s_role_id,s_user_id ,stream_id } = req;
@@ -52,9 +54,37 @@ function getRoles(req,res) {
     })
 }
 
+async function excelUpload(req,res) {
+    try {
+        var matches = req.file.match(/^data:([a-zA-Z0-9]+\/[a-zA-Z0-9-+.]+);base64,(.*)$/);
+        var base64Data = matches[2];
+        const imageBuffer = Buffer.from(base64Data, 'base64');
+        let fileName = req.fileName || "ajay.xlsx";
+        let filePath =  "./temp/" + fileName;
+        fs.writeFileSync(filePath, imageBuffer, 'utf8');
+         const excleData = excelTojson({
+                sourceFile : filePath,
+                header:{
+                    rows : 1
+                },
+                columnToKey:{
+                    "*" : "{{columnHeader}}",
+                }
+            });
+            fs.unlinkSync(filePath); 
+        await teacherFunction.processAndInsertDataOfStudent(excleData.Sheet1);  
+        res.status(200).json({result:{msg : "Excel data inserted successfully." , isComplete:true }});
+    } catch (error) {
+        console.error('Error uploading Excel:', error);
+        res.status(500).json({result:{msg : "Internal server error." , isComplete:false }});  
+    }
+}
+
+
 module.exports = {
     getSubRoles,
     getClassRoles,
     getStreamRoles,
-    getRoles
+    getRoles,
+    excelUpload
 };

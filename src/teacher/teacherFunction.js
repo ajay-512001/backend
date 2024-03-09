@@ -111,7 +111,26 @@ function updateTeacherInfoWithoutTime(req,res) {
     }
 }
 
+async function processAndInsertDataOfStudent(sheetData) {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
+        for (let i = 0; i < sheetData.length; i++) {
+            const rowData = sheetData[i];
+            const { name, age } = rowData;
+            await client.query('INSERT INTO excelcheck (name, age) VALUES ($1, $2)', [name, age]);
+        }
+        await client.query('COMMIT');
+    } catch (error) {
+        await client.query('ROLLBACK');
+        throw error;
+    } finally {
+        client.release();
+    }
+}
+
 module.exports = {
     updateTeacherInfoWithTime,
-    updateTeacherInfoWithoutTime
+    updateTeacherInfoWithoutTime,
+    processAndInsertDataOfStudent
 };

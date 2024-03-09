@@ -10,4 +10,6 @@ commonrouter.post('/getStreamRoles', commonController.getStreamRoles);
 
 commonrouter.post('/getClassRoles', commonController.getClassRoles);
 
+commonrouter.post('/excelUpload', commonController.excelUpload);
+
 module.exports = commonrouter;

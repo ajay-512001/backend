@@ -18,10 +18,15 @@ const getSubRoles = (req,res)  => {
     commonFunction.getSubRoles(req.body,res);
 }
 
+const excelUpload = (req,res) => {
+    commonFunction.excelUpload(req.body,res)
+}
+
 
 module.exports = {
     getRoles,
     getSubRoles,
     getStreamRoles,
     getClassRoles,
+    excelUpload
 };

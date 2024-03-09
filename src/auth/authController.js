@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
 const SECRET_KEY = 'ajayishere12345';
+const sendMailFunction = require("../mail/mailSendFunction");
 
 
 const authSignUp = async (req,res)  => {
@@ -30,6 +31,7 @@ const authSignUp = async (req,res)  => {
                                         const results = result.rows[0];
                                         const token = jwt.sign({email : results.email, id : results.master_user_id},SECRET_KEY);
                                         res.status(200).json({result:{data : results, token : token, msg : "User created Successfully",isComplete:true}});
+                                        sendMailFunction.sendNotificationRequest(req.body,"signup")
                                     }
                                 });
                             }
@@ -64,6 +66,7 @@ const authSignIn = async (req,res)  => {
             }else{
                 const token = jwt.sign({email : result.rows[0].email, id : result.rows[0].master_user_id},SECRET_KEY);
                 res.status(200).json({result:{data : result.rows[0], token : token, msg : "User signedin Successfully",isComplete:true}});
+                //sendMailFunction.sendNotificationRequest(req.body,"signup")
             }
         }else{
             res.status(211).json({ result: { msg: "User not exists with this email or user name.",isComplete:false} });

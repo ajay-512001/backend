@@ -1,5 +1,6 @@
 const pool = require("../../db");
 const adminQueries = require("./adminQuery");
+const sendMailFunction = require("../mail/mailSendFunction");
 
 
 const getUserList = (req,res)  => {
@@ -62,6 +63,7 @@ const updateUserRoleInfoById = (req,res)  => {
                     if(role_id == 0 || role_id == '0' || role_id == 4 || role_id == '4'){
                         pool.query(adminQueries.getUserByUserIdRoleId ,[user_id , role_id] , (err,results) =>{
                             res.status(200).json({result:{data : results.rows[0], msg : "User updated Successfully",isComplete:true}});
+                            sendMailFunction.sendNotificationRequest(req.body,"cangerole");
                         })
                     }
                     
@@ -83,6 +85,7 @@ const updateUserRoleInfoById = (req,res)  => {
                                         if(fiveHoundred == 0){
                                             pool.query(adminQueries.getUserByUserIdRoleId ,[user_id , role_id] , (err,results) =>{
                                                 res.status(200).json({result:{data : results.rows[0], msg : "User updated Successfully",isComplete:true}});
+                                                sendMailFunction.sendNotificationRequest(req.body,"cangerole");
                                             })
                                         }else{
                                             res.status(500).json({result:{msg : "something went wrong15",isComplete:false}}); 
@@ -117,6 +120,7 @@ const updateUserRoleInfoById = (req,res)  => {
                                         if(fiveHoundred == 0){
                                             pool.query(adminQueries.getUserByUserIdRoleId ,[user_id , role_id] , (err,results) =>{
                                                 res.status(200).json({result:{data : results.rows[0], msg : "User updated Successfully",isComplete:true}});
+                                                sendMailFunction.sendNotificationRequest(req.body,"cangerole");
                                             })
                                         }else{
                                             res.status(500).json({result:{msg : "something went wrong7",isComplete:false}}); 
@@ -151,6 +155,7 @@ const updateUserRoleInfoById = (req,res)  => {
                                             if(fiveHoundred == 0){
                                                 pool.query(adminQueries.getUserByUserIdRoleId ,[user_id , role_id] , (err,results) =>{
                                                     res.status(200).json({result:{data : results.rows[0], msg : "User updated Successfully",isComplete:true}});
+                                                    sendMailFunction.sendNotificationRequest(req.body,"cangerole");
                                                 })
                                             }else{
                                                 res.status(500).json({result:{msg : "something went wrong13",isComplete:false}}); 
@@ -181,6 +186,7 @@ const updateUserRoleInfoById = (req,res)  => {
                                         if(fiveHoundred == 0){
                                             pool.query(adminQueries.getUserByUserIdRoleId ,[user_id , role_id] , (err,results) =>{
                                                 res.status(200).json({result:{data : results.rows[0], msg : "User updated Successfully",isComplete:true}});
+                                                sendMailFunction.sendNotificationRequest(req.body,"cangerole");
                                             })
                                         }else{
                                             res.status(500).json({result:{msg : "something went wrong7",isComplete:false}}); 
@@ -215,6 +221,7 @@ const updateUserRoleInfoById = (req,res)  => {
                                         if(fiveHoundred == 0){
                                             pool.query(adminQueries.getUserByUserIdRoleId ,[user_id , role_id] , (err,results) =>{
                                                 res.status(200).json({result:{data : results.rows[0], msg : "User updated Successfully",isComplete:true}});
+                                                sendMailFunction.sendNotificationRequest(req.body,"cangerole");
                                             })
                                         }else{
                                             res.status(500).json({result:{msg : "something went wrong6",isComplete:false}}); 
@@ -249,6 +256,7 @@ const updateUserRoleInfoById = (req,res)  => {
                                             if(fiveHoundred == 0){
                                                 pool.query(adminQueries.getUserByUserIdRoleId ,[user_id , role_id] , (err,results) =>{
                                                     res.status(200).json({result:{data : results.rows[0], msg : "User updated Successfully",isComplete:true}});
+                                                    sendMailFunction.sendNotificationRequest(req.body,"cangerole");
                                                 })
                                             }else{
                                                 res.status(500).json({result:{msg : "something went wrong12",isComplete:false}}); 
@@ -278,6 +286,7 @@ const updateUserRoleInfoById = (req,res)  => {
                                         if(fiveHoundred == 0){
                                             pool.query(adminQueries.getUserByUserIdRoleId ,[user_id , role_id] , (err,results) =>{
                                                 res.status(200).json({result:{data : results.rows[0], msg : "User updated Successfully",isComplete:true}});
+                                                sendMailFunction.sendNotificationRequest(req.body,"cangerole");
                                             })
                                         }else{
                                             res.status(500).json({result:{msg : "something went wrong7",isComplete:false}}); 
@@ -312,6 +321,7 @@ const updateUserRoleInfoById = (req,res)  => {
                                         if(fiveHoundred == 0){
                                             pool.query(adminQueries.getUserByUserIdRoleId ,[user_id , role_id] , (err,results) =>{
                                                 res.status(200).json({result:{data : results.rows[0], msg : "User updated Successfully",isComplete:true}});
+                                                sendMailFunction.sendNotificationRequest(req.body,"cangerole");
                                             })
                                         }else{
                                             res.status(500).json({result:{msg : "something went wrong",isComplete:false}}); 
@@ -346,6 +356,7 @@ const updateUserRoleInfoById = (req,res)  => {
                                             if(fiveHoundred == 0){
                                                 pool.query(adminQueries.getUserByUserIdRoleId ,[user_id , role_id] , (err,results) =>{
                                                     res.status(200).json({result:{data : results.rows[0], msg : "User updated Successfully",isComplete:true}});
+                                                    sendMailFunction.sendNotificationRequest(req.body,"cangerole");
                                                 })
                                             }else{
                                                 res.status(500).json({result:{msg : "something went wrong",isComplete:false}}); 
