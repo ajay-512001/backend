@@ -4,6 +4,7 @@ const authRoutes = require("./src/auth/authRoutes");
 const adminRoutes = require("./src/admin/adminRoutes");
 const teacherRoutes = require("./src/teacher/teacherRoutes");
 const commonRoutes = require("./src/common/commonRoutes");
+const testRoutes = require("./testing");
 const app = express();
 const port = 3000;
 const auth = require("./src/middleware/auth")
@@ -38,5 +39,7 @@ app.use('/api/v1/admin', auth.authToken, adminRoutes);
 app.use('/api/v1/teacher', auth.authToken, teacherRoutes);
 
 app.use('/api/common', auth.authToken, commonRoutes);
+
+app.use('/', testRoutes);
 
 app.listen(port, ()=> console.log('app is listining on port 3000'))
