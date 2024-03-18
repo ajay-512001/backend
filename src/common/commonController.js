@@ -22,11 +22,15 @@ const excelUpload = (req,res) => {
     commonFunction.excelUpload(req.body,res)
 }
 
+const generatePDF = (req,res) => {
+    commonFunction.generatePDF(req.body,res)
+}
 
 module.exports = {
     getRoles,
     getSubRoles,
     getStreamRoles,
     getClassRoles,
-    excelUpload
+    excelUpload,
+    generatePDF
 };

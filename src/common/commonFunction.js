@@ -3,6 +3,7 @@ const commonQueries = require("./commonQueries");
 const fs = require('fs');
 const excelTojson = require('convert-excel-to-json');
 const teacherFunction = require("../teacher/teacherFunction");
+const pdfFunction = require("../pdf/generatepdf");
 
 function getSubRoles(req,res) {
     const { s_role_id,s_user_id ,stream_id } = req;
@@ -73,18 +74,28 @@ async function excelUpload(req,res) {
             });
             fs.unlinkSync(filePath); 
         await teacherFunction.processAndInsertDataOfStudent(excleData.Sheet1);  
-        res.status(200).json({result:{msg : "Excel data inserted successfully." , isComplete:true }});
+        res.status(200).json({result:{data: excleData.Sheet1, msg : "Excel data inserted successfully." , isComplete:true }});
     } catch (error) {
-        console.error('Error uploading Excel:', error);
+        console.log(error)
         res.status(500).json({result:{msg : "Internal server error." , isComplete:false }});  
     }
 }
 
+async function generatePDF(req,res) {
+    try{
+        let PdfUrl = await pdfFunction.generateInvoicePdf();
+        res.status(200).json({result:{data: PdfUrl, msg : "Invoice Generated SuccessFully." , isComplete:true }});
+    }catch(error){
+        console.log(error)
+        res.status(500).json({result:{msg : "Internal server error." , isComplete:false }});  
+    }
+}
 
 module.exports = {
     getSubRoles,
     getClassRoles,
     getStreamRoles,
     getRoles,
-    excelUpload
+    excelUpload,
+    generatePDF
 };

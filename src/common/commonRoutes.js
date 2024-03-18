@@ -12,4 +12,6 @@ commonrouter.post('/getClassRoles', commonController.getClassRoles);
 
 commonrouter.post('/excelUpload', commonController.excelUpload);
 
+commonrouter.post('/generatePDF', commonController.generatePDF);
+
 module.exports = commonrouter;

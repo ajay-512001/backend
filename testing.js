@@ -4,9 +4,9 @@ const testrouter = testRouter();
 
 
 testrouter.get("/test", async (req,res) => {
-    //let info = await pool.query("select * from excelcheck");
+    // let info = await pool.query("select * from excelcheck");
     // res.status(200).json(info.rows);
-    // let info = await pool.query("insert into excelcheck (name, age) VALUES ('sonal', 38)");
+    // let info = await pool.query("insert into excelcheck (name, age) VALUES ($1, $2)",['sonal',38]);
     // res.status(200).json(info.rowCount);
 })
 

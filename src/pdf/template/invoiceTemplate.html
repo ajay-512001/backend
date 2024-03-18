@@ -1,0 +1,149 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fees Invoice</title>
+</head>
+<body style="display: flex; justify-content: center;">
+    <div style="display: flex; width: 95vw; flex-direction: column; height: 90vh; border: 1px solid #000;">
+        <div style="display: flex; width: 100%; flex-direction: row;">
+            <div style="width: 40%; display: flex; justify-content: center; padding: 1rem 0 0 0;"><img width="40%" src="C:/Users/ajayk/OneDrive/Desktop/ezgif-3-007a2daac0.jpg" alt=""></div>
+            <div style="width: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <div style="font-size: 2.5rem; font-weight: 500; padding: 1rem 0 0.5rem 0;">WolfWeb Organisation</div>
+                <div style="width: 50%; padding: 0 0.5rem;">301, Silver Classic, Tejpal Scheme road, VileParle East, Mumbai, Maharastra - 400057</div>
+            </div>
+            <div style="width: 40%; display: flex; align-items: flex-start; padding-top: 1rem; line-height: 2rem; flex-direction: column;">
+                <div style="font-size: 1.2rem;">Contact : +916353642971</div>
+                <div style="font-size: 1.2rem;">Email : WolfWeb@gmail.com</div>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; flex-direction: column; margin: 6rem 0 0 6rem;">
+            <div>Hi {{name}},</div>
+            <p>This is invoice is generated to inform you that your recent payment of the RS. 1000/- is succesufully done.</p>
+            <p>Here is the all transaction history of this year.</p>
+            <table class="table" width="95%" cellspacing="5px">
+                <thead>
+                  <tr style="background-color: rgb(124 246 246);">
+                    <th style="padding: 5px; font-size: 1.1rem;">Transaction Id</th>
+                    <th style="padding: 5px; font-size: 1.1rem;">Transaction Amount</th>
+                    <th style="padding: 5px; font-size: 1.1rem;">Transacction Date</th>
+                    <th style="padding: 5px; font-size: 1.1rem;">Transaction Mode</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each products.prodlist}}
+                  <tr style="background-color: #f6f6f6;">
+                    <td style="width:20%; text-align: center;padding: 5px; font-size: 1.1rem;">{{this.trans_id}}</td>
+                    <td style="width:20%; text-align: center;padding: 5px; font-size: 1.1rem;">RS.{{this.trans_amnt}}</td>
+                    <td style="width:20%; text-align: center;padding: 5px; font-size: 1.1rem;">{{this.trans_date}}</td>
+                    <td style="width:20%; text-align: center;padding: 5px; font-size: 1.1rem;">{{this.trans_mode}}</td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+
+              <br><br>
+
+              <table class="table" width="95%" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="75%"  align="center" style="font-size: 1.1rem;font-weight: 600;background-color:rgb(18, 199, 18); color: #f6f6f6; padding: 10px;">Total Payable</td>
+                    <td width="25%" align="right" style="background-color: #000; font-size: 1.1rem;font-weight: 700;color: rgb(18, 199, 18);">RS.{{products.totalPayable}}</td>
+                </tr>
+                <tr>
+                    <td width="75%"  align="center" style="font-size: 1.1rem;font-weight: 600;background-color:rgb(208, 198, 15); color: #f6f6f6; padding: 10px;">Total Paid</td>
+                    <td width="25%" align="right" style="background-color: #000;font-size: 1.1rem;font-weight: 700;color:rgb(208, 198, 15);">RS.{{products.totalPaid}}</td>
+                </tr>
+                <tr>
+                    <td width="75%"  align="center" style="font-size: 1.1rem;font-weight: 600;background-color:rgb(197, 74, 58); color: #f6f6f6; padding: 10px;">Pending</td>
+                    <td width="25%" align="right" style="background-color: #000; font-size: 1.1rem;font-weight: 700;color:rgb(197, 74, 58);">RS.{{products.pending}}</td>
+                </tr>
+              </table>
+        </div>
+
+        <div style="width: 100%; display: flex; padding: 1rem 0; flex-direction: row;">
+            <div style="width: 70%; display: flex; padding-left: 6rem; justify-content: flex-start;"><p>This is auto generated invoice , Please contact us if you have any doubt</p></div>
+            <div style="width: 30%; display: flex; flex-direction: column; padding-right: 6rem; align-items: end;">
+                <img width="20%" src="C:/Users/ajayk/OneDrive/Desktop/ezgif-3-007a2daac0.jpg" alt="">
+                <span style="text-align: center; padding-top: 0.3rem;">CEO of WolfWeb</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fees Invoice</title>
+</head>
+<body>
+    <div style="width: 80%; margin: 0 auto; padding: 0 1rem; border: 1px solid #000">
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            <div style="width: 100%; text-align: center; padding: 1rem;">
+                <img width="20%" src={{products.symbolbase64}} alt="">
+            </div>
+            <div style="text-align: center;">
+                <div style="font-size: 2.5rem; font-weight: 500;">WolfWeb Organisation</div>
+                <div style="font-size: 1.2rem;">301, Silver Classic, Tejpal Scheme road, VileParle East, Mumbai, Maharastra - 400057</div>
+            </div>
+            <div style="text-align: right; padding-top: 1rem; line-height: 1.5rem; font-size: 1.2rem;">
+                <div>Contact : +916353642971</div>
+                <div>Email : WolfWeb@gmail.com</div>
+            </div>
+        </div>
+        <div style="margin: 2rem 0;">
+            <h3 style="font-size: 20px;">Hi {{products.name}},</h3>
+            <h3 style="font-size: 20px;">This is an invoice generated to inform you that your recent payment of <span style="background-color: #d66b66;">RS. 1000/-</span> was successful.</h3>
+            <h3 style="font-size: 20px;">Here is the transaction history of this year:</h3>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                <thead>
+                    <tr style="background-color: #7cf6f6;">
+                        <th style="padding: 5px; font-size: 1.1rem; border: 1px solid #000;">Transaction Id</th>
+                        <th style="padding: 5px; font-size: 1.1rem; border: 1px solid #000;">Transaction Amount</th>
+                        <th style="padding: 5px; font-size: 1.1rem; border: 1px solid #000;">Transaction Date</th>
+                        <th style="padding: 5px; font-size: 1.1rem; border: 1px solid #000;">Transaction Mode</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each products.prodlist}}
+                    <tr style="background-color: #f6f6f6;">
+                        <td style="text-align: center; padding: 5px; font-size: 1.1rem; border: 1px solid #000;">{{this.trans_id}}</td>
+                        <td style="text-align: center; padding: 5px; font-size: 1.1rem; border: 1px solid #000;">RS.{{this.trans_amnt}}</td>
+                        <td style="text-align: center; padding: 5px; font-size: 1.1rem; border: 1px solid #000;">{{this.trans_date}}</td>
+                        <td style="text-align: center; padding: 5px; font-size: 1.1rem; border: 1px solid #000;">{{this.trans_mode}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+            <br>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr style="color: #f6f6f6;">
+                    <td style="text-align: center; background-color: #03a503;  width: 74%; padding: 10px; font-size: 1.1rem; font-weight: 600; border: 1px solid #000;">Total Payable</td>
+                    <td style="text-align: right; width: 26%; color: #03a503; background-color: #f6f6f6; padding: 10px; font-size: 1.1rem; font-weight: 700; border: 1px solid #000;">RS.{{products.totalPayable}}</td>
+                </tr>
+                <tr style="color: #f6f6f6;">
+                    <td style="text-align: center; background-color: #150fd0;   width: 74%; padding: 10px; font-size: 1.1rem; font-weight: 600; border: 1px solid #000;">Total Paid</td>
+                    <td style="text-align: right; color: #150fd0; background-color: #f6f6f6;  width: 26%; padding: 10px; font-size: 1.1rem; font-weight: 700; border: 1px solid #000;">RS.{{products.totalPaid}}</td>
+                </tr>
+                <tr style="color: #f6f6f6;">
+                    <td style="text-align: center; background-color: #c5423a;  width: 74%; padding: 10px; font-size: 1.1rem; font-weight: 600; border: 1px solid #000;">Pending</td>
+                    <td style="text-align: right; color: #c5423a; background-color: #f6f6f6; width: 26%; padding: 10px; font-size: 1.1rem; font-weight: 700; border: 1px solid #000;">RS.{{products.pending}}</td>
+                </tr>
+            </table>
+        </div>
+        <div style="display: flex; width: 100%; justify-content: space-between; padding: 1rem 0;">
+            <div style="display: flex; width: 100%; flex-direction: column; justify-content: flex-end; text-align: end;"><br>
+                <img width="20%" src={{products.signaturebase64}} alt="signature">
+                <p style="padding-top: 0.3rem; padding-right: 1.2rem; font-size: 1rem;">CEO of WolfWeb</p>
+            </div>
+            <p style="font-size: 1rem; text-align: center;">This is an auto-generated invoice. Please contact us if you have any doubts.</p>
+        </div>
+    </div>
+</body>
+</html>

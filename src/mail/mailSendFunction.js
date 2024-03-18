@@ -12,6 +12,8 @@ async function sendNotificationRequest(req,emailType) {
       sendMailNotification(req,emailType);
   } else {
       console.log('Internet is not working');
+      pool.query("INSERT INTO SendNotificationEmail(email_id, email_from, email_to, response,emailtype,emailtemplate,ispending) VALUES ($1,$2,$3,$4,$5,$6,$7)" ,[null,"ajaygajjarkar512001@gmail.com",req.email,null,emailType,null,0], (error,results) =>{
+      })
   }
 };
 
@@ -22,6 +24,9 @@ async function sendMailNotification(req,emailType){
   var FormatedEmailTemplate;
   const currentDate = new Date();
   let formatDate = `${currentDate.getDate().toString().padStart(2, '0')}/${(currentDate.getMonth() + 1).toString().padStart(2, '0')}/${currentDate.getFullYear()}`;
+
+
+  /* create dynamic data according to need - start. */
 
   if(emailType == "signup"){
     emailTemplate = fs.readFileSync('src/mail/template/signupTemplate.html', 'utf-8');
@@ -43,10 +48,25 @@ async function sendMailNotification(req,emailType){
         subject :"Your Role Change in Wolfweb Organition."
       };
       FormatedEmailTemplate =  emailTemplate.replace(/{{userName}}/g, dynamicData.userName).replace(/{{date}}/g, dynamicData.date).replace(/{{email}}/g, dynamicData.email).replace(/{{roleName}}/g, dynamicData.roleName);
+  }else if (emailType == "invoice"){
+      emailTemplate = fs.readFileSync('src/mail/template/changeRole.html', 'utf-8');
+      req.roleName = req.roleName.toUpperCase();
+      dynamicData = {
+        userName: req.username,
+        date: formatDate,
+        email: req.email,
+        roleName : req.roleName,
+        subject :"Your Transaction Update."
+      };
+      FormatedEmailTemplate =  emailTemplate.replace(/{{userName}}/g, dynamicData.userName).replace(/{{date}}/g, dynamicData.date).replace(/{{email}}/g, dynamicData.email).replace(/{{roleName}}/g, dynamicData.roleName);
   }
 
+  /* create dynamic data according to need - end. */
+
+
+  /* Start smtp Server - start */
+
   let testAccount = await nodemailer.createTestAccount();
-  //connect with the smtp
   let transporter = await nodemailer.createTransport({
     service:'gmail',
     host: "smtp.gnail.com",
@@ -58,21 +78,52 @@ async function sendMailNotification(req,emailType){
     },
   });
 
+  /* Start smtp Server - end */
 
-  let info = await transporter.sendMail({
-    from: {
-      name: mailConfig.SenderName,
-      address : mailConfig.UserName
-    },
-    to: [req.email],
-    subject: dynamicData.subject,
-    html: FormatedEmailTemplate
-  });
+
+  /* send email according to attach file or not - start */
+
+  let info;
+  if(emailType == "invoice"){
+    const pdfBuffer = fs.readFileSync('src/pdf/docs/invoices/first_invoice.pdf');
+    info = await transporter.sendMail({
+      from: {
+        name: mailConfig.SenderName,
+        address : mailConfig.UserName
+      },
+      to: [req.email],
+      subject: dynamicData.subject,
+      html: FormatedEmailTemplate,
+      attachments : [
+        {
+          filename : "yourInvoice.pdf",
+          content : pdfBuffer
+        }
+      ]
+    });
+  }else{
+    info = await transporter.sendMail({
+      from: {
+        name: mailConfig.SenderName,
+        address : mailConfig.UserName
+      },
+      to: [req.email],
+      subject: dynamicData.subject,
+      html: FormatedEmailTemplate,
+    });
+  }
+
+  /* send email according to attach file or not - end */
+
+
+  /* entry in the database - start */
 
   info.envelope.to.forEach(e => {
-    pool.query("INSERT INTO SendNotificationEmail(email_id, email_from, email_to, response,emailtype,emailtemplate) VALUES ($1,$2,$3,$4,$5,$6)" ,[info.messageId,info.envelope.from,e,info.response,emailType,FormatedEmailTemplate], (error,results) =>{
+    pool.query("INSERT INTO SendNotificationEmail(email_id, email_from, email_to, response,emailtype,emailtemplate,ispending) VALUES ($1,$2,$3,$4,$5,$6,$7)" ,[info.messageId,info.envelope.from,e,info.response,emailType,FormatedEmailTemplate,1], (error,results) =>{
     })
   })
+
+  /* entry in the database - end */
 }
 
 module.exports = {sendNotificationRequest};
