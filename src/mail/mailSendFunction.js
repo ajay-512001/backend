@@ -12,8 +12,10 @@ async function sendNotificationRequest(req,emailType) {
       sendMailNotification(req,emailType);
   } else {
       console.log('Internet is not working');
-      pool.query("INSERT INTO SendNotificationEmail(email_id, email_from, email_to, response,emailtype,emailtemplate,ispending) VALUES ($1,$2,$3,$4,$5,$6,$7)" ,[null,"ajaygajjarkar512001@gmail.com",req.email,null,emailType,null,0], (error,results) =>{
-      })
+      if(!req.update){
+        pool.query("INSERT INTO SendNotificationEmail(email_id, email_from, email_to, response,emailtype,emailtemplate,ispending) VALUES ($1,$2,$3,$4,$5,$6,$7)" ,[null,"ajaygajjarkar512001@gmail.com",req.email,null,emailType,null,0], (error,results) =>{
+        })
+      }
   }
 };
 
@@ -119,8 +121,13 @@ async function sendMailNotification(req,emailType){
   /* entry in the database - start */
 
   info.envelope.to.forEach(e => {
-    pool.query("INSERT INTO SendNotificationEmail(email_id, email_from, email_to, response,emailtype,emailtemplate,ispending) VALUES ($1,$2,$3,$4,$5,$6,$7)" ,[info.messageId,info.envelope.from,e,info.response,emailType,FormatedEmailTemplate,1], (error,results) =>{
-    })
+    if(!req.update){
+      pool.query("INSERT INTO SendNotificationEmail(email_id, email_from, email_to, response,emailtype,emailtemplate,ispending) VALUES ($1,$2,$3,$4,$5,$6,$7)" ,[info.messageId,info.envelope.from,e,info.response,emailType,FormatedEmailTemplate,1], (error,results) =>{
+      })  
+    }else{
+      pool.query("update SendNotificationEmail set email_id = $1, email_from = $2, email_to = $3, response = $4,emailtype = $5,emailtemplate = $6,ispending = $7 where notif_id = $8" ,[info.messageId,info.envelope.from,e,info.response,emailType,FormatedEmailTemplate,1,req.id], (error,results) =>{
+      })
+    }
   })
 
   /* entry in the database - end */

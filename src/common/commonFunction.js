@@ -4,6 +4,7 @@ const fs = require('fs');
 const excelTojson = require('convert-excel-to-json');
 const teacherFunction = require("../teacher/teacherFunction");
 const pdfFunction = require("../pdf/generatepdf");
+const sendNotificationRequest = require("../mail/mailSendFunction");
 
 function getSubRoles(req,res) {
     const { s_role_id,s_user_id ,stream_id } = req;
@@ -91,11 +92,43 @@ async function generatePDF(req,res) {
     }
 }
 
+async function getNotifList(req,res) {
+    pool.query(commonQueries.sendNotification, (error,results) =>{
+        if(error){
+            res.status(500).json({result:{msg : error , isComplete:false}});
+        }else if(results.rows.length){
+            res.status(200).json({result:{data : results.rows, msg : "List Found Successfully",isComplete:true}});
+        }
+    })
+}
+
+async function sendNotifbyId(req,res) {
+    try{
+        let data = await pool.query(commonQueries.sendNotificationbyId,[req.notif_id]);
+        let roleName = await pool.query(commonQueries.findRole,[data.rows[0].email_to]);
+        let userName = await pool.query(commonQueries.username,[data.rows[0].email_to]);
+        let dynadata = {
+            username : userName.rows[0].username,
+            email : data.rows[0].email_to,
+            roleName : roleName.rows[0].role_name,
+            update : true,
+            id: req.notif_id
+        }
+        let dataNotif = await sendNotificationRequest.sendNotificationRequest(dynadata,req.emailType);
+        res.status(200).json({result:{data: dataNotif, msg : "EmailSendSuccessfully." , isComplete:true }});
+    }catch(error){
+        console.log(error)
+        res.status(500).json({result:{msg : "Internal server error." , isComplete:false }});  
+    }
+}
+
 module.exports = {
     getSubRoles,
     getClassRoles,
     getStreamRoles,
     getRoles,
     excelUpload,
-    generatePDF
+    generatePDF,
+    getNotifList,
+    sendNotifbyId
 };

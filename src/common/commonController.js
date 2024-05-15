@@ -26,11 +26,21 @@ const generatePDF = (req,res) => {
     commonFunction.generatePDF(req.body,res)
 }
 
+const getNotifList = (req,res) => {
+    commonFunction.getNotifList(req.body,res)
+}
+
+const sendNotifbyId = (req,res) => {
+    commonFunction.sendNotifbyId(req.body,res)
+}
+
 module.exports = {
     getRoles,
     getSubRoles,
     getStreamRoles,
     getClassRoles,
     excelUpload,
-    generatePDF
+    generatePDF,
+    getNotifList,
+    sendNotifbyId
 };

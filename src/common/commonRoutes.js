@@ -14,4 +14,8 @@ commonrouter.post('/excelUpload', commonController.excelUpload);
 
 commonrouter.post('/generatePDF', commonController.generatePDF);
 
+commonrouter.post('/getNotifList', commonController.getNotifList);
+
+commonrouter.post('/sendNotifbyId', commonController.sendNotifbyId);
+
 module.exports = commonrouter;
