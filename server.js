@@ -9,9 +9,10 @@ const app = express();
 const port = 3000;
 const auth = require("./src/middleware/auth")
 const cors = require('cors');
+const helmet = require("helmet");
 
 app.use(express.json({ limit: '10mb' })); // Set the limit based on your requirements
-
+app.use(helmet());
 
 //cors defined 
 const corsOptions ={
