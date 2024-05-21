@@ -5,6 +5,8 @@ const excelTojson = require('convert-excel-to-json');
 const teacherFunction = require("../teacher/teacherFunction");
 const pdfFunction = require("../pdf/generatepdf");
 const sendNotificationRequest = require("../mail/mailSendFunction");
+const whatsappConfig = require("../../whatsappConfig");
+const axios = require('axios');
 
 function getSubRoles(req,res) {
     const { s_role_id,s_user_id ,stream_id } = req;
@@ -122,6 +124,44 @@ async function sendNotifbyId(req,res) {
     }
 }
 
+async function sendWhatsapp(req,res) {
+    let headers = whatsappConfig.whatsapp_req_header;
+    let reqObject;
+    let msgTypeApi;
+    if(req.type != "media"){
+        reqObject = {
+            "mobileno": req.mobileno,
+            "msg" : req.message,
+            "type" : req.type
+          }
+        msgTypeApi = "sendTextMsg";
+    }else{
+        reqObject = {
+            "mobileno": req.mobileno,
+            "file_path" : req.file_path,
+            "caption" : req.caption,
+            "type" : req.type
+          }
+        msgTypeApi = "sendMultimedia";
+    }  
+    try{
+        axios.post(whatsappConfig.whatsapp_end_ponit + msgTypeApi, reqObject, { headers })
+          .then((response) => {
+            if(response.isComplete){
+                res.status(200).json({result:{data: req, msg : "Message sent successfully.",serverMsg:response.description , isComplete:true }});
+            }else{
+                res.status(500).json({result:{msg : "Internal server error." , serverMsg:response.description , isComplete:false }});  
+            }
+          })
+          .catch((error) => {
+            res.status(500).json({result:{msg : "Internal server error." , isComplete:false }});  
+          }); 
+    }catch(error){
+        console.log(error)
+        res.status(500).json({result:{msg : "Internal server error." , isComplete:false }});  
+    }
+}
+
 module.exports = {
     getSubRoles,
     getClassRoles,
@@ -130,5 +170,6 @@ module.exports = {
     excelUpload,
     generatePDF,
     getNotifList,
-    sendNotifbyId
+    sendNotifbyId,
+    sendWhatsapp
 };
