@@ -10,9 +10,13 @@ const port = 3000;
 const auth = require("./src/middleware/auth")
 const cors = require('cors');
 const helmet = require("helmet");
+const { exec } = require('child_process');
 
 app.use(express.json({ limit: '10mb' })); // Set the limit based on your requirements
 app.use(helmet());
+
+let isDisconnect = true
+let server;
 
 //cors defined 
 const corsOptions ={
@@ -43,4 +47,34 @@ app.use('/api/common', auth.authToken, commonRoutes);
 
 app.use('/', testRoutes);
 
-app.listen(port, ()=> console.log('app is listining on port 3000'))
+server = app.listen(port, ()=> {console.log('app is listining on port 3000'), isDisconnect = false;})
+
+   
+
+/* Restarting server on any crash automatically */
+
+
+process.on('exit', (code) => {
+  console.log(`Process exited with code ${code}`);
+  from = "crashed";
+  notifyName = "crashed";
+  console.log(isDisconnect);
+  if(!isDisconnect){
+    restartTerminal(from,notifyName);
+  }
+});
+
+const restartTerminal = (from,notifyName) => {
+  const filePath = 'cachenerror.js';
+  let date = new Date();
+  const fileContent = `//service was restarted by ${from} with Notify Name ${notifyName} at ${date}.`;
+
+  const command =  `@echo ${fileContent} >> ${filePath} 2> nul`;
+  exec(command, (err, stdout, stderr) => {
+    if (err) {
+      console.error('Error saving file:', err);
+    } else {
+      console.log('File saved successfully:', filePath);
+    }
+  }); 
+};
